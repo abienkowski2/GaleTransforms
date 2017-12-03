@@ -19,7 +19,8 @@ function ccw0(min){
 	}
 }
 
-function relint(bt,points){
+
+function ccwSort(bt,points){
 	numPoints = points.length
 
 	var sortpts = []
@@ -39,7 +40,29 @@ function relint(bt,points){
 
 	sortpts.sort(ccw0(minpt),1)
 	sortpts.splice(0,0,minpt)
-	
+	return sortpts
+}
+function relint(bt,points){
+	numPoints = points.length
+
+	// var sortpts = []
+	// minpt = []
+	// minx = 10000
+	// for (i=0;i<numPoints;i++){
+	// 	sortpts.push(bt.subset(math.index([0,1],points[i])))
+	// 	if (sortpts[i]._data[0] < minx){
+	// 		minpt = sortpts[i]
+	// 		minx = sortpts[i]._data[0]
+	// 	}
+
+		
+	// }
+
+	// sortpts.splice(sortpts.indexOf(minpt),1)
+
+	// sortpts.sort(ccw0(minpt),1)
+	// sortpts.splice(0,0,minpt)
+	var sortpts = ccwSort(bt,points)
 	
 	// pts.sort(ccw)
 	comparePoint = Math.floor(numPoints/2);
