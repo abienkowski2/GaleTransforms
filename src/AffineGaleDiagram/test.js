@@ -70,10 +70,31 @@ function affineGalePoints(bt){
 
 }
 
+function fontWrapper(affGale,i,scene,xcoord){
+	return function(font){
+		var geometry = new THREE.TextGeometry( (i+1).toString(), {
+			font: font,
+			size: 0.1,
+			height: 0.05,
+			curveSegments: 12,
+			bevelEnabled: true,
+			bevelThickness: 0.0006,
+			bevelSize: 0.0005,
+			bevelSegments: 5
+		} );
+		var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+		var text = new THREE.Mesh(geometry,material)
+		text.position.set(xcoord,affGale[i].loc,0)
+		scene.add(text)
+		}
+}
+
 
 function dispAffGale(affGale){
 	var scene = new THREE.Scene();
 	var  camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+	// var camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 1500 );
+	// camera.position.set( 0, 400, 700 );		
 	var renderer = new THREE.WebGLRenderer();	
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.setClearColor (0xffffff, 1);
@@ -85,8 +106,28 @@ function dispAffGale(affGale){
 	// var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 	// var sphere = new THREE.Mesh( geometry, material );
 	// sphere.position.set(0,1,0)
-	// scene.add( sphere );
+	// scene.add( sphere );\
 
+	var loader = new THREE.FontLoader();
+
+
+	// loader.load( 'https://raw.githubusercontent.com/abienkowski2/GaleTransforms/master/src/AffineGaleDiagram/fonts/gentilis_regular.typeface.json', function ( font ) {
+
+	// 	var geometry = new THREE.TextGeometry( 1, {
+	// 	font: font,
+	// 	size: 0.1,
+	// 	height: 0.05,
+	// 	curveSegments: 12,
+	// 	bevelEnabled: false,
+	// 	bevelThickness: 1,
+	// 	bevelSize: 1,
+	// 	bevelSegments: 5
+	// } );
+	// var text = new THREE.Mesh(geometry,material)
+	// text.position.set(0.5,0.5,0)
+	// scene.add(text)
+
+	// } );
 
 	for(i = 0;i <6; i++){
 		if (affGale[i].pn == 'p'){
@@ -97,23 +138,8 @@ function dispAffGale(affGale){
 			circle.position.set(0,affGale[i].loc,0)
 			scene.add( circle );
 
-			// var loader = new THREE.FontLoader();
 
-			// loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
-
-			// 	var geometry = new THREE.TextGeometry( i.toString(), {
-			// 		font: font,
-			// 		size: 80,
-			// 		height: 5,
-			// 		curveSegments: 12,
-			// 		bevelEnabled: true,
-			// 		bevelThickness: 10,
-			// 		bevelSize: 8,
-			// 		bevelSegments: 5
-			// 	} );
-			// 	scene.add(geometry)
-
-			// } );
+			loader.load( 'https://raw.githubusercontent.com/abienkowski2/GaleTransforms/master/src/AffineGaleDiagram/fonts/helvetiker_regular.typeface.json', fontWrapper(affGale,i,scene,0.1))
 
 
 
@@ -132,6 +158,9 @@ function dispAffGale(affGale){
 			circle = new THREE.Mesh( geometry, material );
 			circle.position.set(1,affGale[i].loc,0)
 			scene.add( circle );	
+
+			loader.load( 'https://raw.githubusercontent.com/abienkowski2/GaleTransforms/master/src/AffineGaleDiagram/fonts/gentilis_regular.typeface.json', fontWrapper(affGale,i,scene,1.1))
+
 		}
 	}
 
