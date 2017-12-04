@@ -13,9 +13,47 @@
 		<script src="js/OrbitControls.js"></script>
 		<script src="math.js" type="text/javascript"></script>
 		<script>
+		
+		
+			var raycaster = new THREE.Raycaster();
+			var mouse = new THREE.Vector2();
+			var click = false
+			function onMouseMove( event ) {
+
+				// calculate mouse position in normalized device coordinates
+				// (-1 to +1) for both components
+				console.log('mousemove')
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+				click = true
+			}
+
+			function render() {
+				if (click == true){
+					// update the picking ray with the camera and mouse position
+					raycaster.setFromCamera( mouse, camera );
+
+					// calculate objects intersecting the picking ray
+					var intersects = raycaster.intersectObjects( scene.children );
+					console.log('render', intersects)
+					for ( var i = 0; i < intersects.length; i++ ) {
+
+						intersects[ i ].object.material.color.set( 0xff0000 );
+
+					}
+					click = false
+				}
+
+				renderer.render( scene, camera );
+
+			}
+
+			//window.addEventListener( 'mousemove', onMouseMove, false );
+			window.addEventListener( 'click', onMouseMove, false );
+			window.requestAnimationFrame(render);
 			var scene = new THREE.Scene();
 			var  camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-			var controls = new THREE.OrbitControls( camera );
+			//var controls = new THREE.OrbitControls( camera );
 			var renderer = new THREE.WebGLRenderer();
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
@@ -24,6 +62,7 @@
 			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 			var cube = new THREE.Mesh( geometry, material );
+			cube.callback = function(){console.log('hi')}
 			scene.add( cube );
 			var a = [[-2, 3], [2, 1]];
 			var b = [11, 9];
@@ -34,10 +73,11 @@
 			
 			function animate() {
 				requestAnimationFrame( animate );
-				controls.update()
+				//controls.update()
 				//cube.rotation.x += 0.1;
 				//cube.rotation.y += 0.1;
-				renderer.render( scene, camera );			
+				//renderer.render( scene, camera );			
+				render()
 			}		
 			animate();
 			
