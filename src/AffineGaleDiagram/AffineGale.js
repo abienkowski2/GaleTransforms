@@ -1,20 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var fonturl = 'https://raw.githubusercontent.com/abienkowski2/GaleTransforms/master/src/AffineGaleDiagram/fonts/helvetiker_regular.typeface.json'
 
 
@@ -99,12 +83,12 @@ function addCircle(x,y,size,colorarg,scene){
 }
 
 
-function addText(x,y,textarg,scene){
+function addText(x,y,textarg,scene,size){
 		return function(font){
 		var geometry = new THREE.TextGeometry( textarg, {
 			font: font,
-			size: 0.1,
-			height: 0.05,
+			size: size,
+			height: size/20,
 			curveSegments: 12,
 			bevelEnabled: true,
 			bevelThickness: 0.0006,
@@ -170,27 +154,18 @@ function dispAffGale(affGale){
 */
 			addCircle(0,affGale[i].loc,0.05,0x000000,scene)
 			//loader.load( 'https://raw.githubusercontent.com/abienkowski2/GaleTransforms/master/src/AffineGaleDiagram/fonts/helvetiker_regular.typeface.json', fontWrapper(affGale,i,scene,-0.25))
-			loader.load( fonturl, addText(-0.25,affGale[i].loc,(i+1).toString(),scene))
+			loader.load( fonturl, addText(-0.25,affGale[i].loc,(i+1).toString(),scene,0.1))
 
 
 
 		}
 		else{
-			var geometry = new THREE.CircleGeometry( 0.05,32 );
-			// var geometry = new THREE.BoxGeometry(1,1,1);
-			var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
-			var circle = new THREE.Mesh( geometry, material );
-			circle.position.set(0.05,affGale[i].loc,0)
-			scene.add( circle );		
 
-			geometry = new THREE.CircleGeometry( 0.04,32 );
-			// var geometry = new THREE.BoxGeometry(1,1,1);
-			material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
-			circle = new THREE.Mesh( geometry, material );
-			circle.position.set(0.05,affGale[i].loc,0)
-			scene.add( circle );	
-
-			loader.load( 'https://raw.githubusercontent.com/abienkowski2/GaleTransforms/master/src/AffineGaleDiagram/fonts/gentilis_regular.typeface.json', fontWrapper(affGale,i,scene,0.15))
+			
+			addCircle(0.05,affGale[i].loc,0.05,0x000000,scene)
+			addCircle(0.05,affGale[i].loc,0.04,0xffffff,scene)
+			loader.load( fonturl, addText(0.15,affGale[i].loc,(i+1).toString(),scene,0.1))
+			//loader.load( 'https://raw.githubusercontent.com/abienkowski2/GaleTransforms/master/src/AffineGaleDiagram/fonts/gentilis_regular.typeface.json', fontWrapper(affGale,i,scene,0.15))
 
 		}
 	}
