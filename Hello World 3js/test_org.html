@@ -11,6 +11,7 @@
 	<body>
 		<script src="js/three.js"></script>
 		<script src="js/OrbitControls.js"></script>
+		<script src="math.js" type="text/javascript"></script>
 		<script>
 			var scene = new THREE.Scene();
 			var  camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -24,7 +25,10 @@
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 			var cube = new THREE.Mesh( geometry, material );
 			scene.add( cube );
-
+			var a = [[-2, 3], [2, 1]];
+			var b = [11, 9];
+			var x = usolve(a, b);  // [[8], [9]]
+			scene.add(x);
 			camera.position.z = 5;
 			
 			
@@ -36,6 +40,7 @@
 				renderer.render( scene, camera );			
 			}		
 			animate();
+			
 		</script>
 	</body>
 </html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+		<form>
+      		<fieldset>
+        	<legend>Input</legend>
+        	<p>
+          		<label>Vertices</label>
+          		<input type = "text"
+                 		id = "myText"
+                 		value = "1,2,3" />
+		<button onclick="readVertices()">Enter</button>
+		</p>
+		</fieldset>
+		</form>
+		<div id="message"></div>
+		<script src="js/Detector.js"></script>
+		<script src="js/Stats.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		<script src="js/math.min.js"></script>
+		<script src="js/lalolib.js"></script>
+		<script src="test.js"></script>
+		<script src="Three1.js"></script>
+		<div id="ThreeJS" style="position: absolute; left:0px; top:0px"></div>	
+		<script>
+		// standard global variables
+		var container, scene, camera, renderer, controls, stats;
+		// custom global variables
+		var cube;
+		var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
+		var sprite1;
+		var canvas1, context1, texture1;
+		var gale_vertices = computeAndDisplayGaleDiagram();
+		function readVertices() {
+    			var indices = document.getElementById("myText").value;
+			computeAffineDiagram(gale_vertices, indices);
+		}
+		</script>
+	</body>
+</html>
