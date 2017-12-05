@@ -60,6 +60,7 @@
 		<script src="../js/OrbitControls.js"></script>
 		<script src="ComputeGaleDiagram.js"></script>
 		<div>
+			
 			<div>
 				<script type="text/javascript">
 				// standard global variables
@@ -143,12 +144,14 @@
 			</div>
 			<div>
 				<script>
+					affGaleInit()
 					function computeAffine() {
 						console.log(gale_diag_matrix);
 						affineGale = affineGalePoints(gale_diag_matrix);
 						console.log(affineGale);
 						dispAffGale(affineGale)
 					}
+					//computeAffine()
 					
 				</script>
 			</div>
