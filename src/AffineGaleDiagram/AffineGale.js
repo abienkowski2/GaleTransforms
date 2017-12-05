@@ -110,8 +110,8 @@ var camera
 function affGaleInit(){
 	scene = new THREE.Scene();
 	renderer = new THREE.WebGLRenderer();	
-	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-	renderer.setSize( window.innerWidth/2, window.innerHeight/2 );
+	camera = new THREE.PerspectiveCamera( 25, window.innerWidth / window.innerHeight, 1, 10000 );
+	renderer.setSize( window.innerWidth/3.75, window.innerHeight/3);
 	renderer.setClearColor (0xffffff, 1);
 	document.body.appendChild( renderer.domElement );
 	renderer.render(scene,camera)

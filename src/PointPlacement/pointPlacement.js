@@ -4,11 +4,11 @@ function pointPlacement(){
     if (Detector.webgl) { // make sure we can use webgl
         // create the renderer
         var renderer = new THREE.WebGLRenderer();
-        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setSize( window.innerWidth/2.5, window.innerHeight/2.5);
         document.body.appendChild( renderer.domElement );
     
         // and the camera
-        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
+        var camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 10000);
         camera.position.set(0, 0, 100);
         camera.lookAt(new THREE.Vector3(0, 0, 0));
 
