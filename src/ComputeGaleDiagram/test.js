@@ -70,8 +70,6 @@
 }*/
 var fonturl = 'https://raw.githubusercontent.com/abienkowski2/GaleTransforms/master/src/AffineGaleDiagram/fonts/helvetiker_regular.typeface.json'
 
-
-
 // helper function to output formatted results.
 function print(value) {
 	var precision = 14;
@@ -104,14 +102,14 @@ function displayGaleDiagram(kernel) {
 
 	function render() {
 		if (click==true) {
-			console.log('inside render');
-			console.log(scene.children);
+			//console.log('inside render');
+			//console.log(scene.children);
 			raycaster.setFromCamera(mouse, camera);
 			var intersects = raycaster.intersectObjects(scene.children);
-			console.log(intersects);
+			//console.log(intersects);
 			for (var i=0; i < intersects.length; i++) {
 				intersects[i].object.material.color.set(0xff0000);
-				console.log(intersects[i].position);
+				//console.log(intersects[i].position);
 			}	
 		click = false;
 	}
@@ -135,23 +133,23 @@ function displayGaleDiagram(kernel) {
 	var scaling_factor = 40;
 	//print(scaling_factor);
 	zero_vertex = new THREE.Vector3(0,0,0);
-	gale_vertices_2d = [];	
-	gale_vertices = [];
-	gale_vertices.push(zero_vertex);
+	gale_diag_vertices_2d = []; //List which is being finally returned	
+	gale_diag_vertices_3d = []; //Used for the display
+	gale_diag_vertices_3d.push(zero_vertex);
 	for (i = 0, l = kernel.length; i < l; i++) {
 		var j = 0;
 		vertex_x = scaling_factor*kernel.val[i*cols+j];
 		j = 1;
 		vertex_y = scaling_factor*kernel.val[i*cols+j];
 		my_vertex = new THREE.Vector3(vertex_x, vertex_y,0);
-		gale_vertices.push(my_vertex);
+		gale_diag_vertices_3d.push(my_vertex);
 		vertex_2d = [vertex_x, vertex_y];
-		gale_vertices_2d.push(vertex_2d);
+		gale_diag_vertices_2d[i] = vertex_2d;
 	}
-	print("Scaling factor is 30");
-	print("Gale Diagram vertices: ");
-	print(gale_vertices_2d);
-
+	gale_diagram_matrix = array2mat(gale_diag_vertices_2d);
+	document.write("<br>Gale Diagram<br>");
+	print(gale_diag_vertices_2d);
+	
 	window.addEventListener('click', onMouseClick, false);
 	window.requestAnimationFrame(render);	
 	var renderer = new THREE.WebGLRenderer();
@@ -165,26 +163,19 @@ function displayGaleDiagram(kernel) {
 	var material = new THREE.LineBasicMaterial({ color: 0x0000ff });
 	var geometry = new THREE.Geometry();
 	
-	for (i = 1, l = gale_vertices.length; i < l; i++) {
+	for (i = 1, l = gale_diag_vertices_3d.length; i < l; i++) {
 		geometry.vertices.push(zero_vertex);
-		geometry.vertices.push(gale_vertices[i]);
+		geometry.vertices.push(gale_diag_vertices_3d[i]);
 	}
 	var line = new THREE.Line(geometry, material);
 	scene.add(line);
 	var loader = new THREE.FontLoader();
 	renderer.setClearColor(0xffffff,1);
 
-	/*var geometry1 = new THREE.CircleGeometry( 10,32 );
-			// var geometry = new THREE.BoxGeometry(1,1,1);
-			var material1 = new THREE.MeshBasicMaterial( { color: 0x000000 } );
-			var circle = new THREE.Mesh( geometry1, material1 );
-			circle.position.set(0,0,0)
-			scene.add( circle );*/
-	//addCircle(0,0,10.0, 0x000000, scene);
-	for (var i = 0; i < gale_vertices.length; i++)
+	for (var i = 0; i < gale_diag_vertices_3d.length; i++)
 	{
-		addCircle(gale_vertices[i].x,gale_vertices[i].y,1.0,0x000000,scene)		
-		loader.load( fonturl, addText(gale_vertices[i].x,gale_vertices[i].y+1,(i).toString(),scene, 2))		
+		addCircle(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y,1.0,0x000000,scene)		
+		loader.load( fonturl, addText(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y+1,(i).toString(),scene, 2))		
 		//var spritey = makeTextSprite( " " + i + " ", { fontsize: 10, backgroundColor: {r:200, g:100, b:100, a:1} } );
 		//spritey.position = gale_vertices[i].clone().multiplyScalar(1.1);
 		//scene.add( spritey );
@@ -197,7 +188,7 @@ function displayGaleDiagram(kernel) {
 	}		
 	animate();
 	//renderer.render(scene, camera);
-	return gale_vertices;
+	return gale_diagram_matrix;
 }
 
 function computeAndDisplayGaleDiagram() {
@@ -211,17 +202,11 @@ function computeAndDisplayGaleDiagram() {
 	lifted_matrix = liftToNextDim(vertices);
 	//print(lifted_matrix);
 	kernel = nullspace(lifted_matrix);
-	print("Kernel: ");
+	document.write("<br><br>KERNEL<br>");
 	kernel_str = laloprint(kernel, true);
 	print(kernel_str);	
-//	print(kernel);
 	gale_vertices = displayGaleDiagram(kernel);
 	return gale_vertices;
-}
-
-function computeAffineDiagram(gale_vertices, indices) {
-	print(indices);
-	print(gale_vertices);
 }
 
 function redundant() {
