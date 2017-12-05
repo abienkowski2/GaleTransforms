@@ -6,7 +6,26 @@ function print(value) {
 	var precision = 14;
 	document.write(math.format(value, precision) + '<br>');
 }
-
+function addTextGale(x,y,textarg,scene,size){
+		return function(font){
+		var geometry = new THREE.TextGeometry( textarg, {
+			font: font,
+			size: size,
+			height: size/20,
+			curveSegments: 12,
+			bevelEnabled: true,
+			bevelThickness: 0.0006,
+			bevelSize: 0.0005,
+			bevelSegments: 5
+		} );
+		var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+		var text = new THREE.Mesh(geometry,material)
+		text.position.set(x,y,0)
+		scene.add(text)
+		pushTextGale(text)
+		}
+	
+}
 function liftToNextDim(vertices) {
 	var original_dim = 3;
 	var lifted_verts_arr = [[], [], [], []];
@@ -28,7 +47,7 @@ var circles = []
 var line = []
 var texts = []
 
-function addTextGale(text){
+function pushTextGale(text){
 	texts.push(text)
 }
 function displayGaleDiagram(kernel, scaling_factor) {
@@ -112,8 +131,12 @@ function displayGaleDiagram(kernel, scaling_factor) {
 
 	for (var i = 0; i < gale_vertices_3d.length; i++)
 	{
-		circles.push(addCircle(gale_vertices_3d[i].x,gale_vertices_3d[i].y,1.0,0x000000,scene))		
-		loader.load( fonturl, addText(gale_vertices_3d[i].x,gale_vertices_3d[i].y+1,(i).toString(),scene, 2))	
+		circles.push(addCircle(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y,1.0,0x000000,scene))		
+		loader.load( fonturl, addTextGale(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y+1,(i).toString(),scene, 2))	
+		
+		//var spritey = makeTextSprite( " " + i + " ", { fontsize: 10, backgroundColor: {r:200, g:100, b:100, a:1} } );
+		//spritey.position = gale_vertices[i].clone().multiplyScalar(1.1);
+		//scene.add( spritey );
 	}
 	console.log('text list',texts)
 

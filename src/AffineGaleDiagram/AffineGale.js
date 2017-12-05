@@ -54,24 +54,7 @@ function affineGalePoints(bt){
 
 }
 
-function fontWrapper(affGale,i,scene,xcoord){
-	return function(font){
-		var geometry = new THREE.TextGeometry( (i+1).toString(), {
-			font: font,
-			size: 0.1,
-			height: 0.05,
-			curveSegments: 12,
-			bevelEnabled: true,
-			bevelThickness: 0.0006,
-			bevelSize: 0.0005,
-			bevelSegments: 5
-		} );
-		var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
-		var text = new THREE.Mesh(geometry,material)
-		text.position.set(xcoord,affGale[i].loc,0)
-		scene.add(text)
-		}
-}
+
 
 function addCircle(x,y,size,colorarg,scene){
 			var geometry = new THREE.CircleGeometry( size,32 );
@@ -84,7 +67,7 @@ function addCircle(x,y,size,colorarg,scene){
 }
 
 
-function addText(x,y,textarg,scene,size){
+function addTextAff(x,y,textarg,scene,size){
 		return function(font){
 		var geometry = new THREE.TextGeometry( textarg, {
 			font: font,
@@ -100,9 +83,14 @@ function addText(x,y,textarg,scene,size){
 		var text = new THREE.Mesh(geometry,material)
 		text.position.set(x,y,0)
 		scene.add(text)
-		addTextGale(text)
+		pushTextAff(text)
 		}
 	
+}
+var circles = []
+var texts = []
+function pushTextAff(text){
+	texts.push(text)
 }
 var scene 
 var renderer
@@ -115,24 +103,25 @@ function affGaleInit(){
 	renderer.setClearColor (0xffffff, 1);
 	document.body.appendChild( renderer.domElement );
 	renderer.render(scene,camera)
+	
+	camera.position.z = 5;
+	function animate() {
+		requestAnimationFrame( animate );
+		renderer.render( scene, camera );			
+	}		
+	animate();
 }
 
 
 function dispAffGale(affGale){
-	
-	
-	
-	
-
-
 
 	var loader = new THREE.FontLoader();
 
 	for(i = 0;i <6; i++){
 		if (affGale[i].pn == 'p'){
 
-			addCircle(0,affGale[i].loc,0.05,0x000000,scene)
-			loader.load( fonturl, addText(-0.25,affGale[i].loc,(i+1).toString(),scene,0.1))
+			circles.push(addCircle(0,affGale[i].loc,0.05,0x000000,scene))
+			loader.load( fonturl, addTextAff(-0.25,affGale[i].loc,(i+1).toString(),scene,0.1))
 
 
 
@@ -142,19 +131,24 @@ function dispAffGale(affGale){
 			
 			addCircle(0.05,affGale[i].loc,0.05,0x000000,scene)
 			addCircle(0.05,affGale[i].loc,0.04,0xffffff,scene)
-			loader.load( fonturl, addText(0.15,affGale[i].loc,(i+1).toString(),scene,0.1))
+			loader.load( fonturl, addTextAff(0.15,affGale[i].loc,(i+1).toString(),scene,0.1))
 
 		}
 	}
 
-	camera.position.z = 5;
-	function animate() {
-		requestAnimationFrame( animate );
-		renderer.render( scene, camera );			
-	}		
-	animate();
+
 }
 
+function updateAffGale(affGale){
+	for(i=0;i<circles.length;i++){
+		scene.remove(circles[i])
+	}
+	for(i=0;i<texts.length;i++){
+		scene.remove(texts[i])
+	}
+	dispAffGale(affGale)
+	
+}
 
 function testwrapperAffine(){
 	var bt = math.matrix([[0,1,-1,0,-1,1],[1,0,-1,-1,0,1]])

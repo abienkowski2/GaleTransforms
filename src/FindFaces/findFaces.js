@@ -158,7 +158,7 @@ function relint(bt,points){
 			return false
 		}
 		else{
-			if (0 < sortpts[comparePoint]._data[0]){
+			if ((numPoints == 2 || (comparePoint != 1 && comparePoint != numPoints-1)) && 0 <= sortpts[comparePoint]._data[0]){
 				return true
 			}
 			else{
@@ -177,7 +177,7 @@ function isFace(bt,points){
 	
 	
 	numPoints = bt.size()[1]
-	console.log('in isface',bt,numPoints,points)
+	//console.log('in isface',bt,numPoints,points)
 	newpts = []
 	for(i = 0;i<numPoints;i++){
 		if (!points.includes(i)){
@@ -185,17 +185,18 @@ function isFace(bt,points){
 		}
 	}
 	var x =relint(bt,newpts)
+	//console.log(x)
 	return x
-	// console.log(x)
+	
 
 	
 }
 
 
-function testwrapper(){
+function testwrapper(bt){
 
 
-	var bt = math.matrix([[0,1,-1,0,-1,1],[1,0,-1,-1,0,1]])
+//	var bt = math.matrix([[0,1,-1,0,-1,1],[1,0,-1,-1,0,1]])
 	// console.log(bt)
 
 	for(j=0;j<6;j++){

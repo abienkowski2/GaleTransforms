@@ -30,6 +30,7 @@
 		<script src="js/math.min.js"></script>
 		<script src="js/lalolib.js"></script>
 		<script src="js/three.js"></script>
+		<script src="js/THREE.MeshLine.js"></script>
 		<script src="js/Detector.js"></script>
 		<script src="js/PointDragControls.js"></script>
 		<script src="js/Vector3.js"></script>
@@ -87,9 +88,17 @@
 							else
 								result_str += "Vertices ";
 
-							for (var i = 0; i < verts_indices.length-1; i++) {
+								for (var i = 0; i < verts_indices.length-1; i++) {
+									result_str += verts_indices[i]+1;
+									result_str += ", ";
+								}
 								result_str += verts_indices[i]+1;
-								result_str += ", ";
+								if (verts_indices.length == 1)
+									result_str += " constitutes a face in the given diagram.";
+								else
+									result_str += " constitute a face in the given diagram.";
+								//document.getElementById("isAFace").innerHTML = isAFace.toString()
+								document.getElementById("isAFace").innerHTML = result_str;
 							}
 							result_str += verts_indices[i]+1;
 							if (verts_indices.length == 1)
@@ -109,7 +118,12 @@
 								result_str += "Vertices ";
 							for (var i = 0; i < verts_indices.length-1; i++) {
 								result_str += verts_indices[i]+1;
-								result_str += ", ";
+								if (verts_indices.length == 1)
+									result_str += " does not constitute a face in the given diagram.";
+								else
+									result_str += " do not constitute a face in the given diagram.";
+								//document.getElementById("isAFace").innerHTML = isAFace.toString()
+								document.getElementById("isAFace").innerHTML = result_str;
 							}
 							result_str += verts_indices[i]+1;
 							if (verts_indices.length == 1)
@@ -121,8 +135,6 @@
 							document.getElementById("isAFace").innerHTML = result_str;
 							console.log(result_str);
 						}
-						console.log(isAFace);
-					}
 				</script>
 			</div>
 		</div>

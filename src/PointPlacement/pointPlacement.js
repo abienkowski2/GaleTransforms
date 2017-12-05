@@ -1,4 +1,5 @@
-
+//var THREE = require( 'three' );
+//var MeshLine = require( 'three.meshline' );
 var spheres
 function pointPlacement(){
     if (Detector.webgl) { // make sure we can use webgl
@@ -58,6 +59,7 @@ function pointPlacement(){
 		//drag_controls.init( scene,camera,renderer);
 		window.addEventListener("mousemove",requestRender,false)
 		window.addEventListener("mouseclick",requestRender,false)*/
+		window.addEventListener('mouseup', updateFunc,false);
     }
     else{	
         var warning = Detector.getWebGLErrorMessage();
@@ -67,13 +69,88 @@ function pointPlacement(){
 
             
 }
+function updateFunc(event){
+	console.log('update func')
+	gale_diag_matrix = updateGaleDiagram(getPos())
+	updateEdges(gale_diag_matrix)
+	affineGale = affineGalePoints(gale_diag_matrix);
+	updateAffGale(affineGale)
+
+}
+var face = -1
+function addFace(gale,points){
+	if 	(face != -1){
+		spheres[0].parent.remove(face)
+	}
+	if (isFace(gale,points)){
+		console.log('adding face',points)
+		var geometry = new THREE.Geometry();
+		for (i = 0;i<points.length;i++){
+			ind = points[i]
+			geometry.vertices.push(new THREE.Vector3(spheres[ind].matrixWorld.elements[12],spheres[ind].matrixWorld.elements[13],spheres[ind].matrixWorld.elements[14]))
+		}
+		if (points.length == 3){
+			geometry.faces.push(new THREE.Face3(0,1,2))
+			geometry.faces.push(new THREE.Face3(2,1,0))
+		}
+		else if(points.length == 4){
+			geometry.faces.push(new THREE.Face3(0,1,2))
+			geometry.faces.push(new THREE.Face3(2,1,0))
+			geometry.faces.push(new THREE.Face3(0,2,3))
+			geometry.faces.push(new THREE.Face3(3,2,0))
+			geometry.faces.push(new THREE.Face3(1,3,0))
+			geometry.faces.push(new THREE.Face3(0,3,1))
+		}
+		var material=new THREE.MeshBasicMaterial( {color:0xff0000});
+		face = new THREE.Mesh( geometry, material)
+		spheres[0].parent.add(face)
+	}
+	
+}
+var edges = []
+function updateEdges(gale){
+	console.log(spheres)
+	for (i=0;i<edges.length;i++){
+		spheres[0].parent.remove(edges[i])
+	}
+	for (i=0;i<spheres.length;i++){
+		spheres[i].matrixWorldNeedsUpdate = true
+	}
+	addEdges(gale)
+	
+}
+
+function addEdges(gale){
+	
+	for (start=0;start<6;start++){
+		for(end=start+1;end<6;end++){
+			//console.log([start,end])
+			if (isFace(gale,[start,end])){
+					//console.log('adding line')
+					//var material = new THREE.LineBasicMaterial({ color: 0x0000ff, linewidth:10 });
+					var material = new MeshLineMaterial({color: new THREE.Color(0xffffff), lineWidth:0.5});
+					var geometry = new THREE.Geometry();
+					geometry.vertices.push(new THREE.Vector3(spheres[start].matrixWorld.elements[12],spheres[start].matrixWorld.elements[13],spheres[start].matrixWorld.elements[14]))
+					geometry.vertices.push(new THREE.Vector3(spheres[end].matrixWorld.elements[12],spheres[end].matrixWorld.elements[13],spheres[end].matrixWorld.elements[14]))
+
+					//var line = new THREE.Line(geometry, material);
+					var line  = new MeshLine()
+					line.setGeometry(geometry)
+					var mesh = new THREE.Mesh( line.geometry, material );
+					edges.push(mesh)
+					spheres[start].parent.add(mesh);
+			}
+		}
+	}
+	
+}
 
 function getPos(){
 
     console.log(spheres[1].modelViewMatrix.elements)
     vertices = []
     for (i=0;i<6;i++){
-        vertices.push(new THREE.Vector3(spheres[i].modelViewMatrix.elements[12],spheres[i].modelViewMatrix.elements[13],spheres[i].modelViewMatrix.elements[14]+100))
+        vertices.push(new THREE.Vector3(spheres[i].matrixWorld.elements[12],spheres[i].matrixWorld.elements[13],spheres[i].matrixWorld.elements[14]))
     }
     return vertices
 }
