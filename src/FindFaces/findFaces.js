@@ -198,49 +198,49 @@ function testwrapper(){
 	var bt = math.matrix([[0,1,-1,0,-1,1],[1,0,-1,-1,0,1]])
 	// console.log(bt)
 
-	// for(j=0;j<6;j++){
-	// 	isFace(bt,[j])
-	// }
-	// console.log("2")
-	// var t = [[0,1],[1,2],[0,2],[0,3],[3,4],[1,4],[3,5],[2,5],[4,5]]
-	// var f = [[0,4],[0,5],[1,3],[1,5],[2,3],[2,4]]
-	// for (j = 0;j <t.length;j++){
-	// 	console.log(t[j])
-	// 	isFace(bt,t[j])
-	// }
-	// for (k = 0;k <f.length;k++){
-	// 	console.log(f[k])
-	// 	isFace(bt,f[k])
-	// }
+	for(j=0;j<6;j++){
+		isFace(bt,[j])
+	}
+	console.log("2")
+	var t = [[0,1],[1,2],[0,2],[0,3],[3,4],[1,4],[3,5],[2,5],[4,5]]
+	var f = [[0,4],[0,5],[1,3],[1,5],[2,3],[2,4]]
+	for (j = 0;j <t.length;j++){
+		console.log(t[j])
+		isFace(bt,t[j])
+	}
+	for (k = 0;k <f.length;k++){
+		console.log(f[k])
+		isFace(bt,f[k])
+	}
 
-	// console.log('3')
-	// var f3 = []
-	// for(i = 0;i < 6;i++){
-	// 	for(j = i+1;j<6;j++){
-	// 		for(k=j+1;k<6;k++){
-	// 				f3.push([i,j,k])
-	// 		}
-	// 	}
-	// }
-	// for (j=0;j<f3.length;j++){
-	// 	console.log(f3[j])
-	// 	isFace(bt,f3[j])
-	// }
-	// console.log('4')
-	// var f4 = []
-	// for(i = 0;i < 6;i++){
-	// 	for(j = i+1;j<6;j++){
-	// 		for(k=j+1;k<6;k++){
-	// 			for (m = k+1;m<6;m++){
-	// 				f4.push([i,j,k,m])
-	// 			}
-	// 		}
-	// 	}
-	// }
-	// for (j=0;j<f4.length;j++){
-	// 	console.log(f4[j])
-	// 	isFace(bt,f4[j])
-	// }
+	console.log('3')
+	var f3 = []
+	for(i = 0;i < 6;i++){
+		for(j = i+1;j<6;j++){
+			for(k=j+1;k<6;k++){
+					f3.push([i,j,k])
+			}
+		}
+	}
+	for (j=0;j<f3.length;j++){
+		console.log(f3[j])
+		isFace(bt,f3[j])
+	}
+	console.log('4')
+	var f4 = []
+	for(i = 0;i < 6;i++){
+		for(j = i+1;j<6;j++){
+			for(k=j+1;k<6;k++){
+				for (m = k+1;m<6;m++){
+					f4.push([i,j,k,m])
+				}
+			}
+		}
+	}
+	for (j=0;j<f4.length;j++){
+		console.log(f4[j])
+		isFace(bt,f4[j])
+	}
 
 
 	
