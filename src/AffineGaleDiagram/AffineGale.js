@@ -59,7 +59,7 @@ function affineGalePoints(bt){
 function addCircle(x,y,size,colorarg,scene){
 			var geometry = new THREE.CircleGeometry( size,32 );
 			// var geometry = new THREE.BoxGeometry(1,1,1);
-			var material = new THREE.MeshBasicMaterial( { color: colorarg } );
+			var material = new THREE.MeshBasicMaterial( colorarg );
 			var circle = new THREE.Mesh( geometry, material );
 			circle.position.set(x,y,0)
 			scene.add( circle );
@@ -67,7 +67,7 @@ function addCircle(x,y,size,colorarg,scene){
 }
 
 
-function addTextAff(x,y,textarg,scene,size){
+function addTextAff(x,y,textarg,scene,size, color_arg){
 		return function(font){
 		var geometry = new THREE.TextGeometry( textarg, {
 			font: font,
@@ -79,7 +79,7 @@ function addTextAff(x,y,textarg,scene,size){
 			bevelSize: 0.0005,
 			bevelSegments: 5
 		} );
-		var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+		var material = new THREE.MeshBasicMaterial( color_arg );
 		var text = new THREE.Mesh(geometry,material)
 		text.position.set(x,y,0)
 		scene.add(text)
@@ -112,16 +112,16 @@ function affGaleInit(){
 	animate();
 }
 
+var colors = [{color: 0xff0000},{color: 0x00ff00},{color: 0x0000ff},{color: 0xff00ff},{color: 0xCA6F1E},{color: 0x8E44AD}]
 
 function dispAffGale(affGale){
 
 	var loader = new THREE.FontLoader();
-
 	for(i = 0;i <6; i++){
 		if (affGale[i].pn == 'p'){
 
-			circles.push(addCircle(0,affGale[i].loc,0.05,0x000000,scene))
-			loader.load( fonturl, addTextAff(-0.25,affGale[i].loc,(i+1).toString(),scene,0.1))
+			circles.push(addCircle(0,affGale[i].loc,0.05,{color:0x000000},scene))
+			loader.load( fonturl, addTextAff(-0.25,affGale[i].loc,(i+1).toString(),scene,0.1, colors[i]))
 
 
 
@@ -129,9 +129,9 @@ function dispAffGale(affGale){
 		else{
 
 			
-			addCircle(0.05,affGale[i].loc,0.05,0x000000,scene)
-			addCircle(0.05,affGale[i].loc,0.04,0xffffff,scene)
-			loader.load( fonturl, addTextAff(0.15,affGale[i].loc,(i+1).toString(),scene,0.1))
+			addCircle(0.05,affGale[i].loc,0.05,{color:0x000000},scene)
+			addCircle(0.05,affGale[i].loc,0.04,{color:0xffffff},scene)
+			loader.load( fonturl, addTextAff(0.15,affGale[i].loc,(i+1).toString(),scene,0.1, colors[i]))
 
 		}
 	}

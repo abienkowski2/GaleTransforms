@@ -6,17 +6,18 @@ function pointPlacement(){
         // create the renderer
         var renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth/2.5, window.innerHeight/2.5);
+		renderer.setClearColor(0xffffff,1);
         document.body.appendChild( renderer.domElement );
     
         // and the camera
         var camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 10000);
-        camera.position.set(0, 0, 100);
+        camera.position.set(50, 50, 50);
         camera.lookAt(new THREE.Vector3(0, 0, 0));
-
+		
         var scene = new THREE.Scene();
         // and something to look at
         var geometry = new THREE.SphereGeometry( 1, 32, 32 );
-        var colors = [{color: 0xff0000},{color: 0x00ff00},{color: 0x0000ff},{color: 0xff00ff},{color: 0xffff00},{color: 0xffffff}]
+        //var colors = [{color: 0xff0000},{color: 0x00ff00},{color: 0x0000ff},{color: 0xff00ff},{color: 0xffff00},{color: 0x8E44AD}]
         spheres = []
         for(i =0;i<6;i++){
             var material=new THREE.MeshBasicMaterial( colors[i]);
@@ -70,10 +71,17 @@ function pointPlacement(){
             
 }
 function updateFunc(event){
+	for (i=0;i<spheres.length;i++){
+		spheres[i].matrixWorldNeedsUpdate = true
+	}
 	console.log('update func')
-	gale_diag_matrix = updateGaleDiagram(getPos())
+	var scaling = 30
+	gale_diag_array = updateGaleDiagram(getPos(), scaling)
+	gale_diag_matrix
 	updateEdges(gale_diag_matrix)
+	
 	affineGale = affineGalePoints(gale_diag_matrix);
+	console.log('Affine Gale',affineGale)
 	updateAffGale(affineGale)
 
 }
@@ -113,9 +121,7 @@ function updateEdges(gale){
 	for (i=0;i<edges.length;i++){
 		spheres[0].parent.remove(edges[i])
 	}
-	for (i=0;i<spheres.length;i++){
-		spheres[i].matrixWorldNeedsUpdate = true
-	}
+
 	addEdges(gale)
 	
 }
@@ -128,7 +134,7 @@ function addEdges(gale){
 			if (isFace(gale,[start,end])){
 					//console.log('adding line')
 					//var material = new THREE.LineBasicMaterial({ color: 0x0000ff, linewidth:10 });
-					var material = new MeshLineMaterial({color: new THREE.Color(0xffffff), lineWidth:0.5});
+					var material = new MeshLineMaterial({color: new THREE.Color(0x000000), lineWidth:0.5});
 					var geometry = new THREE.Geometry();
 					geometry.vertices.push(new THREE.Vector3(spheres[start].matrixWorld.elements[12],spheres[start].matrixWorld.elements[13],spheres[start].matrixWorld.elements[14]))
 					geometry.vertices.push(new THREE.Vector3(spheres[end].matrixWorld.elements[12],spheres[end].matrixWorld.elements[13],spheres[end].matrixWorld.elements[14]))

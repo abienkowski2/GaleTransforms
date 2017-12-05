@@ -6,7 +6,7 @@ function print(value) {
 	var precision = 14;
 	document.write(math.format(value, precision) + '<br>');
 }
-function addTextGale(x,y,textarg,scene,size){
+function addTextGale(x,y,textarg,scene,size, color_arg){
 		return function(font){
 		var geometry = new THREE.TextGeometry( textarg, {
 			font: font,
@@ -18,7 +18,7 @@ function addTextGale(x,y,textarg,scene,size){
 			bevelSize: 0.0005,
 			bevelSegments: 5
 		} );
-		var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+		var material = new THREE.MeshBasicMaterial( color_arg );
 		var text = new THREE.Mesh(geometry,material)
 		text.position.set(x,y,0)
 		scene.add(text)
@@ -109,7 +109,7 @@ function displayGaleDiagram(kernel, scaling_factor) {
 	//window.addEventListener('click', onMouseClick, false);
 	//window.requestAnimationFrame(render);	
 	var renderer = new THREE.WebGLRenderer();
-	renderer.setSize(window.innerWidth/3.75, window.innerHeight/3);
+	renderer.setSize(window.innerWidth/3.75, window.innerHeight/3.75);
 	document.body.appendChild(renderer.domElement);
 
 	var camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 10000);
@@ -128,11 +128,14 @@ function displayGaleDiagram(kernel, scaling_factor) {
 	//lines.push(line)
 	var loader = new THREE.FontLoader();
 	renderer.setClearColor(0xffffff,1);
-
-	for (var i = 0; i < gale_vertices_3d.length; i++)
+	//var colors = [{color: 0xff0000},{color: 0x00ff00},{color: 0x0000ff},{color: 0xff00ff},{color: 0xffff00},{color: 0x8E44AD}]
+	circles.push(addCircle(gale_vertices_3d[0].x,gale_vertices_3d[0].y,1.0,{color:0x000000},scene))		
+	loader.load( fonturl, addTextGale(gale_vertices_3d[0].x,gale_vertices_3d[0].y+1,'0',scene, 2, {color:0x000000}))
+	for (var i = 1; i < gale_vertices_3d.length; i++)
 	{
-		circles.push(addCircle(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y,1.0,0x000000,scene))		
-		loader.load( fonturl, addTextGale(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y+1,(i).toString(),scene, 2))	
+
+		circles.push(addCircle(gale_vertices_3d[i].x,gale_vertices_3d[i].y,1.0,colors[i-1],scene))		
+		loader.load( fonturl, addTextGale(gale_vertices_3d[i].x,gale_vertices_3d[i].y+1,(i).toString(),scene, 2, colors[i-1]))	
 		
 		//var spritey = makeTextSprite( " " + i + " ", { fontsize: 10, backgroundColor: {r:200, g:100, b:100, a:1} } );
 		//spritey.position = gale_vertices[i].clone().multiplyScalar(1.1);
