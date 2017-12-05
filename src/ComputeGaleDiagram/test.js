@@ -146,7 +146,9 @@ function displayGaleDiagram(kernel) {
 		vertex_2d = [vertex_x, vertex_y];
 		gale_diag_vertices_2d[i] = vertex_2d;
 	}
-	gale_diagram_matrix = array2mat(gale_diag_vertices_2d);
+	gale_diagram_matrix = math.transpose(math.matrix(gale_diag_vertices_2d))
+	console.log('GALE VERTICES',gale_diagram_matrix)
+
 	document.write("<br>Gale Diagram<br>");
 	print(gale_diag_vertices_2d);
 	

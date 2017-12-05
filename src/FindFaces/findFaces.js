@@ -177,6 +177,7 @@ function isFace(bt,points){
 	
 	
 	numPoints = bt.size()[1]
+	console.log('in isface',bt,numPoints,points)
 	newpts = []
 	for(i = 0;i<numPoints;i++){
 		if (!points.includes(i)){
@@ -184,6 +185,7 @@ function isFace(bt,points){
 		}
 	}
 	var x =relint(bt,newpts)
+	return x
 	// console.log(x)
 
 	

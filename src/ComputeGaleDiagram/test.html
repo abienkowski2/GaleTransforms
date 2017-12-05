@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset=utf-8>
-		<title>My first three.js app</title>
+		<title>Gale Transforms</title>
 		<style>
 			body { margin: 0; }
 			canvas { width: 80%; height: 80% }
@@ -45,6 +45,7 @@
 		<input type="checkbox" id="chbx5"> vertex 5 </input>
 		<input type="checkbox" id="chbx6"> vertex 6 </input>
 		<button onclick="checkForFace()">Is a Face?</button> </div>
+		<p id="isAFace"></p>
 		<div>
 		<h2> Affine Gale Diagram</h2>
 		<p id="p2">Click on the button to find the affine Gale diagram</p>
@@ -55,44 +56,56 @@
 		<script src="js/lalolib.js"></script>
 		<script src="js/three.js"></script>
 		<script src="../AffineGaleDiagram/AffineGale.js"></script>
+		<script src="../FindFaces/findFaces.js"></script>
 		<script src="js/OrbitControls.js"></script>
 		<script src="test.js"></script>
-		
-		<script type="text/javascript">
-		// standard global variables
-		//var container, scene, camera, renderer, controls, stats;
-		// custom global variables
-		//var cube;
-		//var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
-		//var sprite1;
-		//var canvas1, context1, texture1;
-		var gale_diag_matrix = computeAndDisplayGaleDiagram();
-		//document.getElementById("p1").innerHTML = "Check the vertices for which you would like to carry out the Face Test:";
-		//document.getElementById("p2").innerHTML = "Click on the button to find the affine Gale diagram";
-		function computeAffine() {
-				console.log(gale_diag_matrix);
-				affineGale = affineGalePoints(gale_diag_matrix);
-				console.log(affineGale);
-			}
-		function checkForFace() {
-				var indices = [];
-				if (document.getElementById("chbx1").checked == true)
-					indices.push(0);
-				if (document.getElementById("chbx2").checked == true)
-					indices.push(1);
-				if (document.getElementById("chbx3").checked == true)
-					indices.push(2);
-				if (document.getElementById("chbx4").checked == true)
-					indices.push(3);
-				if (document.getElementById("chbx5").checked == true)
-					indices.push(4);
-				if (document.getElementById("chbx6").checked == true)
-					indices.push(5);
-				console.log(indices);
-				console.log(gale_diag_matrix);
-				isFace = IsAFace(gale_diag_matrix, indices);
-				console.log(isFace);
-			}
-		</script>
+		<div>
+			<div>
+				<script type="text/javascript">
+				// standard global variables
+				//var container, scene, camera, renderer, controls, stats;
+				// custom global variables
+				//var cube;
+				//var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
+				//var sprite1;
+				//var canvas1, context1, texture1;
+				var gale_diag_matrix = computeAndDisplayGaleDiagram();
+				//document.getElementById("p1").innerHTML = "Check the vertices for which you would like to carry out the Face Test:";
+				//document.getElementById("p2").innerHTML = "Click on the button to find the affine Gale diagram";
+
+				function checkForFace() {
+						var indices = [];
+						if (document.getElementById("chbx1").checked == true)
+							indices.push(0);
+						if (document.getElementById("chbx2").checked == true)
+							indices.push(1);
+						if (document.getElementById("chbx3").checked == true)
+							indices.push(2);
+						if (document.getElementById("chbx4").checked == true)
+							indices.push(3);
+						if (document.getElementById("chbx5").checked == true)
+							indices.push(4);
+						if (document.getElementById("chbx6").checked == true)
+							indices.push(5);
+						console.log(indices);
+						console.log(gale_diag_matrix);
+						isAFace = isFace(gale_diag_matrix, indices);
+						document.getElementById("isAFace").innerHTML = isAFace.toString()
+						console.log(isAFace);
+					}
+				</script>
+			</div>
+			<div>
+				<script>
+					function computeAffine() {
+						console.log(gale_diag_matrix);
+						affineGale = affineGalePoints(gale_diag_matrix);
+						console.log(affineGale);
+						dispAffGale(affineGale)
+					}
+					
+				</script>
+			</div>
+		</div>
 	</body>
 </html>

@@ -44,7 +44,7 @@ function affineGalePoints(bt){
 		}
 		else if( math.dot(math.squeeze(bt_arr[i]),math.squeeze(normVec)) > 0){
 			var tempbt = math.squeeze(bt_arr[i])
-			var temp_lock = math.dot(math.multiply(1/math.norm(tempbt),tempbt),math.squeeze(linpoint))
+			var temp_loc = math.dot(math.multiply(1/math.norm(tempbt),tempbt),math.squeeze(linpoint))
 			var temp_struct = {pn:'p',loc:temp_loc}
 			affGale.push(temp_struct)
 		}
@@ -185,6 +185,7 @@ function dispAffGale(affGale){
 
 function testwrapperAffine(){
 	var bt = math.matrix([[0,1,-1,0,-1,1],[1,0,-1,-1,0,1]])
+	console.log(bt)
 	// var bt = math.matrix([[-1,0,0.5],[-1,-1,1]])
 	
 	
