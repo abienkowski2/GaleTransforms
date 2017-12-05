@@ -129,8 +129,8 @@ function dispAffGale(affGale){
 		else{
 
 			
-			addCircle(0.05,affGale[i].loc,0.05,{color:0x000000},scene)
-			addCircle(0.05,affGale[i].loc,0.04,{color:0xffffff},scene)
+			circles.push(addCircle(0.05,affGale[i].loc,0.05,{color:0x000000},scene))
+			circles.push(addCircle(0.05,affGale[i].loc,0.04,{color:0xffffff},scene))
 			loader.load( fonturl, addTextAff(0.15,affGale[i].loc,(i+1).toString(),scene,0.1, colors[i]))
 
 		}

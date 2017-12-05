@@ -77,9 +77,9 @@ function updateFunc(event){
 	console.log('update func')
 	var scaling = 30
 	gale_diag_array = updateGaleDiagram(getPos(), scaling)
-	gale_diag_matrix
+	gale_diag_matrix = gale_diag_array[0]
 	updateEdges(gale_diag_matrix)
-	
+	console.log(gale_diag_matrix)
 	affineGale = affineGalePoints(gale_diag_matrix);
 	console.log('Affine Gale',affineGale)
 	updateAffGale(affineGale)
