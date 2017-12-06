@@ -88,22 +88,22 @@ var texts = []
 function pushTextAff(text){
 	texts.push(text)
 }
-var scene 
-var renderer
-var camera
+var affScene 
+var affRenderer
+var affCamera
 function affGaleInit(){
-	scene = new THREE.Scene();
-	renderer = new THREE.WebGLRenderer();	
-	camera = new THREE.PerspectiveCamera( 25, window.innerWidth / window.innerHeight, 1, 10000 );
-	renderer.setSize( window.innerWidth/3.75, window.innerHeight/3);
-	renderer.setClearColor (0xffffff, 1);
-	document.body.appendChild( renderer.domElement );
-	renderer.render(scene,camera)
+	affScene = new THREE.Scene();
+	affRenderer = new THREE.WebGLRenderer();	
+	affCamera = new THREE.PerspectiveCamera( 25, window.innerWidth / window.innerHeight, 1, 10000 );
+	affRenderer.setSize( window.innerWidth/3.75, window.innerHeight/3);
+	affRenderer.setClearColor (0xffffff, 1);
+	document.body.appendChild( affRenderer.domElement );
+	affRenderer.render(affScene,affCamera)
 	
-	camera.position.z = 5;
+	affCamera.position.z = 5;
 	function animate() {
 		requestAnimationFrame( animate );
-		renderer.render( scene, camera );			
+		affRenderer.render( affScene, affCamera );			
 	}		
 	animate();
 }
@@ -116,8 +116,8 @@ function dispAffGale(affGale){
 	for(i = 0;i <6; i++){
 		if (affGale[i].pn == 'p'){
 
-			circles.push(addCircle(0,affGale[i].loc,0.05,{color:0x000000},scene))
-			loader.load( fonturl, addTextAff(-0.25,affGale[i].loc,(i+1).toString(),scene,0.1, colors[i]))
+			circles.push(addCircle(0,affGale[i].loc,0.05,{color:0x000000},affScene))
+			loader.load( fonturl, addTextAff(-0.25,affGale[i].loc,(i+1).toString(),affScene,0.1, colors[i]))
 
 
 
@@ -125,9 +125,9 @@ function dispAffGale(affGale){
 		else{
 
 			
-			circles.push(addCircle(0.05,affGale[i].loc,0.05,{color:0x000000},scene))
-			circles.push(addCircle(0.05,affGale[i].loc,0.04,{color:0xffffff},scene))
-			loader.load( fonturl, addTextAff(0.15,affGale[i].loc,(i+1).toString(),scene,0.1, colors[i]))
+			circles.push(addCircle(0.05,affGale[i].loc,0.05,{color:0x000000},affScene))
+			circles.push(addCircle(0.05,affGale[i].loc,0.04,{color:0xffffff},affScene))
+			loader.load( fonturl, addTextAff(0.15,affGale[i].loc,(i+1).toString(),affScene,0.1, colors[i]))
 
 		}
 	}
@@ -137,10 +137,10 @@ function dispAffGale(affGale){
 
 function updateAffGale(affGale){
 	for(i=0;i<circles.length;i++){
-		scene.remove(circles[i])
+		affScene.remove(circles[i])
 	}
 	for(i=0;i<texts.length;i++){
-		scene.remove(texts[i])
+		affScene.remove(texts[i])
 	}
 	dispAffGale(affGale)
 	

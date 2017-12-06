@@ -43,43 +43,68 @@ function liftToNextDim(vertices) {
 	}
 	return lifted_verts_mat;
 }
-var circles = []
+var galeCircles = []
 var line = []
-var texts = []
-
+var galeTexts = []
+var mouse = new THREE.Vector2();
+var galeRenderer
+var galeCamera
+var galeScene
+var click = false;
+var raycaster = new THREE.Raycaster();
+var selected_verts = []
+var selection_circles = []
+function render() {
+	if (click==true) {
+		//console.log('inside render');
+		//console.log(scene.children);
+		raycaster.setFromCamera(mouse, galeCamera);
+		var intersects = raycaster.intersectObjects(galeCircles);
+		for (var i=0; i < intersects.length; i++) {
+			if (selection_circles.includes(intersects[i].object.name)){
+				selection_circles.splice(selection_circles.indexOf(intersects[i].object.name),1)
+				for(j=0;j<selection_circles.length;j++){
+					if (selection_circles[j].name == intersects[i].object.name){
+						galeScene.remove(selection_circles[j])
+						selection_circles.splice(j,1)
+						selected_verts.splice(selected_verts.indexOf(intersects[i].object.name-1),1)
+						break
+					}
+				}
+			}
+			else{
+				selected_verts.push(intersects[i].object.name-1)
+				selection_circles.push(intersects[i].object.name)
+				var newCirc = addCircle(intersects[i].object.position.x,intersects[i].object.position.y,1.5,{color:0x000000},galeScene)
+				newCirc.position.z = -0.01
+				newCirc.name = intersects[i].object.name
+				selection_circles.push(newCirc)
+			}
+			console.log(selected_verts)
+			addFace(gale_matrix,selected_verts)
+			//intersects[i].object.material.color.set(0xff0000);
+			//console.log(intersects[i].position);
+		}	
+		click = false;
+	}
+	galeRenderer.render(galeScene, galeCamera);
+}
 function pushTextGale(text){
 	texts.push(text)
 }
 function displayGaleDiagram(kernel, scaling_factor) {
 
-	var raycaster = new THREE.Raycaster();
-	var mouse = new THREE.Vector2();
-	var click = false;
+	
 
-	function render() {
-		if (click==true) {
-			//console.log('inside render');
-			//console.log(scene.children);
-			raycaster.setFromCamera(mouse, camera);
-			var intersects = raycaster.intersectObjects(scene.children);
-			//console.log(intersects);
-			for (var i=0; i < intersects.length; i++) {
-				intersects[i].object.material.color.set(0xff0000);
-				//console.log(intersects[i].position);
-			}	
-			click = false;
-		}
-		renderer.render(scene, camera);
-	}
+
 	
 	function onMouseClick(event) {
-		mouse.x = (event.clientX/ window.innerWidth)*2 -1;
-		mouse.y = - (event.clientY/window.innerHeight)*2 +1;
+		var rect = galeRenderer.domElement.getBoundingClientRect()
+		mouse.x = ((event.clientX-rect.left)/ galeRenderer.domElement.width)*2 -1;
+		mouse.y = - ((event.clientY-rect.top)/galeRenderer.domElement.height)*2 +1;
 		click = true;
-		console.log('onMouseClick');
 	}
 		
-	console.log('kernel',kernel)
 	var cols = kernel.n; //2
 	var x_val = kernel.val[0];
 	var y_val = kernel.val[1];
@@ -103,19 +128,18 @@ function displayGaleDiagram(kernel, scaling_factor) {
 		gale_vertices_2d[i][1] = vertex_y;
 	}
 	gale_matrix = math.transpose(math.matrix(gale_vertices_2d))
-	console.log('GALE VERTICES',gale_matrix)
 	gale_str = laloprint(array2mat(gale_vertices_2d), true);
 	
-	//window.addEventListener('click', onMouseClick, false);
+	window.addEventListener('click', onMouseClick, false);
 	//window.requestAnimationFrame(render);	
-	var renderer = new THREE.WebGLRenderer();
-	renderer.setSize(window.innerWidth/3.75, window.innerHeight/3.75);
-	document.body.appendChild(renderer.domElement);
+	galeRenderer = new THREE.WebGLRenderer();
+	galeRenderer.setSize(window.innerWidth/3.75, window.innerHeight/3.75);
+	document.body.appendChild(galeRenderer.domElement);
 
-	var camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 10000);
-	camera.position.set(0, 0, 100);
+	galeCamera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 10000);
+	galeCamera.position.set(0, 0, 100);
 	//camera.lookAt(new THREE.Vector3(0, 0, 0));
-	var scene = new THREE.Scene();
+	galeScene = new THREE.Scene();
 	var material = new THREE.LineBasicMaterial({ color: 0x0000ff });
 	var geometry = new THREE.Geometry();
 
@@ -124,24 +148,24 @@ function displayGaleDiagram(kernel, scaling_factor) {
 		geometry.vertices.push(gale_vertices_3d[i]);
 	}
 	line = new THREE.Line(geometry, material);
-	scene.add(line);
+	galeScene.add(line);
 	//lines.push(line)
 	var loader = new THREE.FontLoader();
-	renderer.setClearColor(0xffffff,1);
+	galeRenderer.setClearColor(0xffffff,1);
 	//var colors = [{color: 0xff0000},{color: 0x00ff00},{color: 0x0000ff},{color: 0xff00ff},{color: 0xffff00},{color: 0x8E44AD}]
-	circles.push(addCircle(gale_vertices_3d[0].x,gale_vertices_3d[0].y,1.0,{color:0x000000},scene))		
-	loader.load( fonturl, addTextGale(gale_vertices_3d[0].x,gale_vertices_3d[0].y+1,'0',scene, 2, {color:0x000000}))
+	galeCircles.push(addCircle(gale_vertices_3d[0].x,gale_vertices_3d[0].y,1.0,{color:0x000000},galeScene))		
+	loader.load( fonturl, addTextGale(gale_vertices_3d[0].x,gale_vertices_3d[0].y+1,'0',galeScene, 2, {color:0x000000}))
 	for (var i = 1; i < gale_vertices_3d.length; i++)
 	{
 
-		circles.push(addCircle(gale_vertices_3d[i].x,gale_vertices_3d[i].y,1.0,colors[i-1],scene))		
-		loader.load( fonturl, addTextGale(gale_vertices_3d[i].x,gale_vertices_3d[i].y+1,(i).toString(),scene, 2, colors[i-1]))	
+		galeCircles.push(addCircle(gale_vertices_3d[i].x,gale_vertices_3d[i].y,1.0,colors[i-1],galeScene))	
+		galeCircles[i].name = i	
+		loader.load( fonturl, addTextGale(gale_vertices_3d[i].x,gale_vertices_3d[i].y+1,(i).toString(),galeScene, 2, colors[i-1]))	
 		
 		//var spritey = makeTextSprite( " " + i + " ", { fontsize: 10, backgroundColor: {r:200, g:100, b:100, a:1} } );
 		//spritey.position = gale_vertices[i].clone().multiplyScalar(1.1);
 		//scene.add( spritey );
 	}
-	console.log('text list',texts)
 
 	function animate() {
 		requestAnimationFrame( animate );
@@ -153,11 +177,9 @@ function displayGaleDiagram(kernel, scaling_factor) {
 	return [gale_matrix, gale_str];
 }
 function updateGaleDiagram(vertices, scaling_factor) {
-	console.log('orig vertices',vertices)
 	lifted_matrix = liftToNextDim(vertices);
 	//print(lifted_matrix);
 	kernel = nullspace(lifted_matrix);
-	console.log(kernel)
 	var raycaster = new THREE.Raycaster();
 	var mouse = new THREE.Vector2();
 	var click = false;
@@ -182,23 +204,19 @@ function updateGaleDiagram(vertices, scaling_factor) {
 		gale_vertices_2d[i][1] = vertex_y;
 	}
 	gale_matrix = math.transpose(math.matrix(gale_vertices_2d))
-	console.log('GALE VERTICES',gale_matrix)
 	gale_str = laloprint(array2mat(gale_vertices_2d), true);
 
 	//console.log('lines',lines)
-	console.log('lines before',line)
 	for (i = 0; i < gale_vertices_3d.length-1; i++) {
 		line.geometry.vertices[2*i] = zero_vertex
 		line.geometry.vertices[2*i+1] = gale_vertices_3d[i+1]
 	}
 	line.geometry.verticesNeedUpdate = true;
-	console.log('lines after',line)
 
-	renderer.setClearColor(0xffffff,1);
 
 	for (var i = 0; i < gale_vertices_3d.length; i++)
 	{
-		circles[i].position.set(gale_vertices_3d[i].x,gale_vertices_3d[i].y,0)
+		galeCircles[i].position.set(gale_vertices_3d[i].x,gale_vertices_3d[i].y,0)
 		texts[i].position.set(gale_vertices_3d[i].x,gale_vertices_3d[i].y+1,0)
 		//addCircle(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y,1.0,0x000000,scene)		
 		//loader.load( fonturl, addText(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y+1,(i).toString(),scene, 2))		

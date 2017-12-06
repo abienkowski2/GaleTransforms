@@ -36,16 +36,8 @@
 			}
 		</script>-->
 		<div>
-		<h2>Face Test</h2>
-		<p id="p1">Select the vertices for which you would like to carry out the Face Test</p>
-		<input type="checkbox" id="chbx1" name="chbx"> vertex 1 </input>
-		<input type="checkbox" id="chbx2" name="chbx"> vertex 2 </input>
-		<input type="checkbox" id="chbx3" name="chbx"> vertex 3 </input>
-		<input type="checkbox" id="chbx4" name="chbx"> vertex 4 </input>
-		<input type="checkbox" id="chbx5" name="chbx"> vertex 5 </input>
-		<input type="checkbox" id="chbx6" name="chbx"> vertex 6 </input>
-		<button onclick="checkForFace()">Is a Face?</button> </div>
-		<p id="isAFace"></p>
+		<h2>Gale Transforms</h2>
+
 
 
 		<script src="js/math.min.js"></script>
@@ -81,7 +73,6 @@
 					var scaling_factor = 30
 					var gale_array = computeAndDisplayGaleDiagram(getPos(), scaling_factor);
 					var gale_diag_matrix = gale_array[0]
-					console.log('face check',isFace(gale_diag_matrix,[0,1]))
 					addEdges(gale_diag_matrix,-1,-1)
 					//testwrapper(gale_diag_matrix)
 					//isFace(gale_diag_matrix,[0,4])
@@ -114,7 +105,6 @@
 									verts_indices.push(i);
 								}
 							}
-							console.log(verts_indices);
 							addFace(gale_diag_matrix,verts_indices)
 							isAFace = isFace(gale_diag_matrix, verts_indices);
 							if (isAFace == true) {
@@ -154,7 +144,6 @@
 								//document.getElementById("isAFace").innerHTML = isAFace.toString()
 								document.getElementById("isAFace").innerHTML = result_str;
 							}
-							console.log(isAFace);
 						}
 				</script>
 			</div>
