@@ -40,8 +40,32 @@ function ccwSort(bt,points){
 
 	sortpts.sort(ccw0(minpt),1)
 	sortpts.splice(0,0,minpt)
+
 	return sortpts
 }
+
+function convHull(bt,points){
+	
+	numPoints = points.length
+	var sortpts = ccwSort(bt,points)
+
+	if (numPoints > 3){
+		cHull = []
+		cHull.push(sortpts[0])
+		cHull.push(sortpts[1])
+		
+		for(i=2;i<numPoints;i++){
+			while(ccw(cHull[cHull.length-2],cHull[cHull.length-1],sortpts[i]) == -1){
+				cHull.pop()
+			}
+			cHull.push(sortpts[i])
+		}
+
+	}
+	return cHull
+}
+
+
 function relint(bt,points){
 	numPoints = points.length
 
@@ -62,7 +86,7 @@ function relint(bt,points){
 
 	// sortpts.sort(ccw0(minpt),1)
 	// sortpts.splice(0,0,minpt)
-	var sortpts = ccwSort(bt,points)
+	var sortpts = convHull(bt,points)
 	
 	// pts.sort(ccw)
 	comparePoint = Math.floor(numPoints/2);

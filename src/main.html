@@ -81,6 +81,7 @@
 					var scaling_factor = 30
 					var gale_array = computeAndDisplayGaleDiagram(getPos(), scaling_factor);
 					var gale_diag_matrix = gale_array[0]
+					console.log('face check',isFace(gale_diag_matrix,[0,1]))
 					addEdges(gale_diag_matrix,-1,-1)
 					//testwrapper(gale_diag_matrix)
 					//isFace(gale_diag_matrix,[0,4])

@@ -27,7 +27,7 @@ function pointPlacement(){
         }
 		spheres[0].position.set(0,0,0)
 		spheres[1].position.set(3,0,0)
-		spheres[2].position.set(0,3,0)
+		spheres[2].position.set(0,3,-4)
 		spheres[3].position.set(0,0,3)
 		spheres[4].position.set(3,0,3)
 		spheres[5].position.set(0,3,3)
@@ -159,7 +159,6 @@ function addEdges(gale, redStart,redEnd){
 			//console.log([start,end])
 			if (isFace(gale,[start,end])){
 					
-							
 					//console.log('adding line')
 					//var material = new THREE.LineBasicMaterial({ color: 0x0000ff, linewidth:10 });
 					var material 
