@@ -11,7 +11,7 @@ function pointPlacement(){
     
         // and the camera
         var camera = new THREE.PerspectiveCamera(25, window.innerWidth / window.innerHeight, 1, 10000);
-        camera.position.set(50, 50, 50);
+        camera.position.set(15, 15, 15);
         camera.lookAt(new THREE.Vector3(0, 0, 0));
 		
         var scene = new THREE.Scene();
@@ -74,6 +74,10 @@ function updateFunc(event){
 	for (i=0;i<spheres.length;i++){
 		spheres[i].matrixWorldNeedsUpdate = true
 	}
+	if 	(face != -1){
+		spheres[0].parent.remove(face)
+		face = -1
+	}
 	console.log('update func')
 	var scaling = 30
 	gale_diag_array = updateGaleDiagram(getPos(), scaling)
@@ -90,28 +94,34 @@ function addFace(gale,points){
 	if 	(face != -1){
 		spheres[0].parent.remove(face)
 	}
+	updateEdges(gale)
 	if (isFace(gale,points)){
-		console.log('adding face',points)
-		var geometry = new THREE.Geometry();
-		for (i = 0;i<points.length;i++){
-			ind = points[i]
-			geometry.vertices.push(new THREE.Vector3(spheres[ind].matrixWorld.elements[12],spheres[ind].matrixWorld.elements[13],spheres[ind].matrixWorld.elements[14]))
-		}
 		if (points.length == 3){
-			geometry.faces.push(new THREE.Face3(0,1,2))
-			geometry.faces.push(new THREE.Face3(2,1,0))
+			console.log('adding face',points)
+			var geometry = new THREE.Geometry();
+			for (i = 0;i<points.length;i++){
+				ind = points[i]
+				geometry.vertices.push(new THREE.Vector3(spheres[ind].matrixWorld.elements[12],spheres[ind].matrixWorld.elements[13],spheres[ind].matrixWorld.elements[14]))
+			}
+			if (points.length == 3){
+				geometry.faces.push(new THREE.Face3(0,1,2))
+				geometry.faces.push(new THREE.Face3(2,1,0))
+			}
+			else if(points.length == 4){
+				geometry.faces.push(new THREE.Face3(0,1,2))
+				geometry.faces.push(new THREE.Face3(2,1,0))
+				geometry.faces.push(new THREE.Face3(0,2,3))
+				geometry.faces.push(new THREE.Face3(3,2,0))
+				geometry.faces.push(new THREE.Face3(1,3,0))
+				geometry.faces.push(new THREE.Face3(0,3,1))
+			}
+			var material=new THREE.MeshBasicMaterial( {color:0xff0000});
+			face = new THREE.Mesh( geometry, material)
+			spheres[0].parent.add(face)
 		}
-		else if(points.length == 4){
-			geometry.faces.push(new THREE.Face3(0,1,2))
-			geometry.faces.push(new THREE.Face3(2,1,0))
-			geometry.faces.push(new THREE.Face3(0,2,3))
-			geometry.faces.push(new THREE.Face3(3,2,0))
-			geometry.faces.push(new THREE.Face3(1,3,0))
-			geometry.faces.push(new THREE.Face3(0,3,1))
+		else if(points.length == 2){
+			highLightEdge(points[0],points[1])
 		}
-		var material=new THREE.MeshBasicMaterial( {color:0xff0000});
-		face = new THREE.Mesh( geometry, material)
-		spheres[0].parent.add(face)
 	}
 	
 }
@@ -119,13 +129,22 @@ var edges = []
 function updateEdges(gale){
 	console.log(spheres)
 	for (i=0;i<edges.length;i++){
-		spheres[0].parent.remove(edges[i])
+		spheres[0].parent.remove(edges[i].edge)
 	}
+	edges = []
 
 	addEdges(gale)
 	
 }
-
+function highLightEdge(start,end){
+	for(i=0;i<edges.length;i++){
+		if ((edges[i].start == start && edges[i].end == end) || (edges[i].start == end && edges[i].end == start)){
+			console.log('Edge to change color',edges[i].edge)
+			edges[i].edge.material.color = new THREE.Color(0xff000000)
+		}
+	}
+	
+}
 function addEdges(gale){
 	
 	for (start=0;start<6;start++){
@@ -143,7 +162,7 @@ function addEdges(gale){
 					var line  = new MeshLine()
 					line.setGeometry(geometry)
 					var mesh = new THREE.Mesh( line.geometry, material );
-					edges.push(mesh)
+					edges.push({edge:mesh,start:start,end:end})
 					spheres[start].parent.add(mesh);
 			}
 		}
