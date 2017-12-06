@@ -28,7 +28,7 @@ function ccwSort(bt,points){
 	minx = 10000
 	for (i=0;i<numPoints;i++){
 		sortpts.push(bt.subset(math.index([0,1],points[i])))
-		if (sortpts[i]._data[0] < minx){
+		if (parseFloat(sortpts[i]._data[0]) < parseFloat(minx)){
 			minpt = sortpts[i]
 			minx = sortpts[i]._data[0]
 		}
@@ -87,7 +87,8 @@ function relint(bt,points){
 	// sortpts.sort(ccw0(minpt),1)
 	// sortpts.splice(0,0,minpt)
 	var sortpts = convHull(bt,points)
-	
+
+	numPoints = sortpts.length
 	// pts.sort(ccw)
 	comparePoint = Math.floor(numPoints/2);
 	lastPoint = 0

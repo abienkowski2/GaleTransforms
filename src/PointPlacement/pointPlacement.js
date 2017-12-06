@@ -39,7 +39,7 @@ function pointPlacement(){
 
         // initialise controls
         var drag_controls = new THREE.PointDragControls();
-		drag_controls.init( scene,camera,renderer)//, {auto_render: true});    	
+		drag_controls.init( scene,camera,renderer, {mode_auto:false})//, {auto_render: true});    	
 		var orbit_controls = new THREE.OrbitControls( camera, document, renderer.domElement );
 		orbit_controls.update();
 		orbit_controls.ignoreObjects = scene.children; // or the objects you want drag control over
@@ -156,7 +156,6 @@ function addEdges(gale, redStart,redEnd){
 	oldPos = getPos()
 	for (start=0;start<6;start++){
 		for(end=start+1;end<6;end++){
-			//console.log([start,end])
 			if (isFace(gale,[start,end])){
 					
 					//console.log('adding line')
