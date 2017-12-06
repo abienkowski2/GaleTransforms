@@ -9,37 +9,8 @@
 		</style>
 	</head>
 	<body>
-			
-			<!--<input type="checkbox" name="vertices" id="vertices" value="1">vertex 1</input>
-			<input type="checkbox" name="vertices" id="vertices" value="2">vertex 2</input>
-			<input type="checkbox" name="vertices" id="vertices" value="3">vertex 3</input>
-			<input type="checkbox" name="vertices" id="vertices" value="4">vertex 4</input>
-			<input type="checkbox" name="vertices" id="vertices" value="5">vertex 5</input>
-			<input type="checkbox" name="vertices" id="vertices" value="6">vertex 6</input>
-			<!--<button onclick="readVertices()">Is a Face?</button>-->
-		<!--<script>
-			document.body.appendChild(form);
-			//document.getElementById('submit').addEventListener('click', readVertices)
-			function onClickHandler() {
-    				var checkedValue = null; 
-				var inputElements = document.getElementsByName('vertices');
-				console.log(inputElements);
-				var verts_indices = [];
-				for(var i=0; inputElements[i]; ++i){
-					console.log(inputElements[i].checked);
-      					if(inputElements[i].checked){
-           				//checkedValue = inputElements[i].value;
-           					verts_indices.push(i+1);
-      					}
-				}
-				computeAffineDiagram(gale_diag_matrix);
-			}
-		</script>-->
 		<div>
 		<h2>Gale Transforms</h2>
-
-
-
 		<script src="js/math.min.js"></script>
 		<script src="js/lalolib.js"></script>
 		<script src="js/three.js"></script>
@@ -63,100 +34,19 @@
 			</div>
 			<div>
 				<script type="text/javascript">
-					// standard global variables
-					//var container, scene, camera, renderer, controls, stats;
-					// custom global variables
-					//var cube;
-					//var projector, mouse = { x: 0, y: 0 }, INTERSECTED;
-					//var sprite1;
-					//var canvas1, context1, texture1;
 					var scaling_factor = 30
 					var gale_array = computeAndDisplayGaleDiagram(getPos(), scaling_factor);
 					var gale_diag_matrix = gale_array[0]
 					addEdges(gale_diag_matrix,-1,-1)
-					//testwrapper(gale_diag_matrix)
-					//isFace(gale_diag_matrix,[0,4])
-					//document.getElementById("p1").innerHTML = "Check the vertices for which you would like to carry out the Face Test:";
-					//document.getElementById("p2").innerHTML = "Click on the button to find the affine Gale diagram";
-
-					function checkForFace() {
-							
-							/*var indices = [];
-							if (document.getElementById("chbx1").checked == true)
-								indices.push(0);
-							if (document.getElementById("chbx2").checked == true)
-								indices.push(1);
-							if (document.getElementById("chbx3").checked == true)
-								indices.push(2);
-							if (document.getElementById("chbx4").checked == true)
-								indices.push(3);
-							if (document.getElementById("chbx5").checked == true)
-								indices.push(4);
-							if (document.getElementById("chbx6").checked == true)
-								indices.push(5);*/
-							//console.log(indices);
-							//console.log(gale_diag_matrix);
-							var inputElements = document.getElementsByName('chbx');
-							//console.log(inputElements);
-							var verts_indices = [];
-							for(var i=0; inputElements[i]; ++i){
-								//console.log(inputElements[i].checked);
-								if(inputElements[i].checked){
-									verts_indices.push(i);
-								}
-							}
-							addFace(gale_diag_matrix,verts_indices)
-							isAFace = isFace(gale_diag_matrix, verts_indices);
-							if (isAFace == true) {
-								var result_str = "";
-								if (verts_indices.length == 1)
-									result_str = "Vertex ";
-								else
-									result_str = "Vertices ";
-
-								for (var i = 0; i < verts_indices.length-1; i++) {
-									result_str += verts_indices[i]+1;
-									result_str += ", ";
-								}
-								result_str += verts_indices[i]+1;
-								if (verts_indices.length == 1)
-									result_str += " constitutes a face in the given diagram.";
-								else
-									result_str += " constitute a face in the given diagram.";
-								//document.getElementById("isAFace").innerHTML = isAFace.toString()
-								document.getElementById("isAFace").innerHTML = result_str;
-							}
-							else if (isAFace == false) {
-								var result_str = "";
-								if (verts_indices.length == 1)
-									result_str = "Vertex ";
-								else
-									result_str = "Vertices ";
-								for (var i = 0; i < verts_indices.length-1; i++) {
-									result_str += verts_indices[i]+1;
-									result_str += ", ";
-								}
-								result_str += verts_indices[i]+1;
-								if (verts_indices.length == 1)
-									result_str += " does not constitute a face in the given diagram.";
-								else
-									result_str += " do not constitute a face in the given diagram.";
-								//document.getElementById("isAFace").innerHTML = isAFace.toString()
-								document.getElementById("isAFace").innerHTML = result_str;
-							}
-						}
 				</script>
 			</div>
 			<div>
 				<script>
 					affGaleInit()
-					
 					//console.log(gale_diag_matrix);
 					affineGale = affineGalePoints(gale_diag_matrix);
 					//console.log(affineGale);
 					dispAffGale(affineGale)
-	
-					
 				</script>
 			</div>
 		</div>
