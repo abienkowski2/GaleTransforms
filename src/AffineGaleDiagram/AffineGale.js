@@ -29,10 +29,7 @@ function affineGalePoints(bt){
 			}	
 		}
 	}
-	console.log(linpoint)
 	linpoint = math.multiply(1/math.norm(math.squeeze(linpoint)),linpoint)
-	console.log(linpoint)
-	console.log(normVec)
 
 	var affGale = []
 	for(i=0;i<numPts;i++){
@@ -49,7 +46,6 @@ function affineGalePoints(bt){
 			affGale.push(temp_struct)
 		}
 	}
-	console.log(affGale)
 	return affGale
 
 }
@@ -152,7 +148,6 @@ function updateAffGale(affGale){
 
 function testwrapperAffine(){
 	var bt = math.matrix([[0,1,-1,0,-1,1],[1,0,-1,-1,0,1]])
-	console.log(bt)
 	// var bt = math.matrix([[-1,0,0.5],[-1,-1,1]])
 	
 	

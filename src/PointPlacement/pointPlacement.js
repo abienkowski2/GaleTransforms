@@ -70,23 +70,37 @@ function pointPlacement(){
 
             
 }
+var oldPos 
+
 function updateFunc(event){
 	for (i=0;i<spheres.length;i++){
 		spheres[i].matrixWorldNeedsUpdate = true
 	}
-	if 	(face != -1){
-		spheres[0].parent.remove(face)
-		face = -1
+	var flag = false
+	var newPos = getPos()
+	if (oldPos.length == newPos.length){
+		for(i = 0;i < oldPos.length;i++){
+			if (oldPos[i].x != newPos[i].x && oldPos[i].y != newPos[i].y && oldPos[i].z != newPos[i].z){
+				flag = true
+			}
+		}	
 	}
-	console.log('update func')
-	var scaling = 30
-	gale_diag_array = updateGaleDiagram(getPos(), scaling)
-	gale_diag_matrix = gale_diag_array[0]
-	updateEdges(gale_diag_matrix)
-	console.log(gale_diag_matrix)
-	affineGale = affineGalePoints(gale_diag_matrix);
-	console.log('Affine Gale',affineGale)
-	updateAffGale(affineGale)
+	else{
+		flag = true
+	}
+	if (flag){
+		oldPos = newPos
+		if 	(face != -1){
+			spheres[0].parent.remove(face)
+			face = -1
+		}
+		var scaling = 30
+		gale_diag_array = updateGaleDiagram(getPos(), scaling)
+		gale_diag_matrix = gale_diag_array[0]
+		updateEdges(gale_diag_matrix,-1,-1)
+		affineGale = affineGalePoints(gale_diag_matrix);
+		updateAffGale(affineGale)
+	}
 
 }
 var face = -1
@@ -97,7 +111,6 @@ function addFace(gale,points){
 	updateEdges(gale)
 	if (isFace(gale,points)){
 		if (points.length == 3){
-			console.log('adding face',points)
 			var geometry = new THREE.Geometry();
 			for (i = 0;i<points.length;i++){
 				ind = points[i]
@@ -120,40 +133,42 @@ function addFace(gale,points){
 			spheres[0].parent.add(face)
 		}
 		else if(points.length == 2){
-			highLightEdge(points[0],points[1])
+			updateEdges(gale,points[0],points[1])
 		}
 	}
 	
 }
 var edges = []
-function updateEdges(gale){
-	console.log(spheres)
+function updateEdges(gale,redStart,redEnd){
+	
 	for (i=0;i<edges.length;i++){
 		spheres[0].parent.remove(edges[i].edge)
 	}
 	edges = []
 
-	addEdges(gale)
+	addEdges(gale,redStart,redEnd)
 	
 }
-function highLightEdge(start,end){
-	for(i=0;i<edges.length;i++){
-		if ((edges[i].start == start && edges[i].end == end) || (edges[i].start == end && edges[i].end == start)){
-			console.log('Edge to change color',edges[i].edge)
-			edges[i].edge.material.color = new THREE.Color(0xff000000)
-		}
-	}
+
 	
-}
-function addEdges(gale){
-	
+
+function addEdges(gale, redStart,redEnd){
+	oldPos = getPos()
 	for (start=0;start<6;start++){
 		for(end=start+1;end<6;end++){
 			//console.log([start,end])
 			if (isFace(gale,[start,end])){
+					
+							
 					//console.log('adding line')
 					//var material = new THREE.LineBasicMaterial({ color: 0x0000ff, linewidth:10 });
-					var material = new MeshLineMaterial({color: new THREE.Color(0x000000), lineWidth:0.5});
+					var material 
+					if ((redStart == start && redEnd == end) || (redStart == end && redEnd == start)){
+						material = new MeshLineMaterial({color: new THREE.Color(0xff0000), lineWidth:0.5});
+					}
+					else{
+						material = new MeshLineMaterial({color: new THREE.Color(0x000000), lineWidth:0.5});
+					}
 					var geometry = new THREE.Geometry();
 					geometry.vertices.push(new THREE.Vector3(spheres[start].matrixWorld.elements[12],spheres[start].matrixWorld.elements[13],spheres[start].matrixWorld.elements[14]))
 					geometry.vertices.push(new THREE.Vector3(spheres[end].matrixWorld.elements[12],spheres[end].matrixWorld.elements[13],spheres[end].matrixWorld.elements[14]))
@@ -172,7 +187,6 @@ function addEdges(gale){
 
 function getPos(){
 
-    console.log(spheres[1].modelViewMatrix.elements)
     vertices = []
     for (i=0;i<6;i++){
         vertices.push(new THREE.Vector3(spheres[i].matrixWorld.elements[12],spheres[i].matrixWorld.elements[13],spheres[i].matrixWorld.elements[14]))
