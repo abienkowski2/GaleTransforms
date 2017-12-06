@@ -61,13 +61,13 @@ function render() {
 		raycaster.setFromCamera(mouse, galeCamera);
 		var intersects = raycaster.intersectObjects(galeCircles);
 		for (var i=0; i < intersects.length; i++) {
-			if (selection_circles.includes(intersects[i].object.name)){
-				selection_circles.splice(selection_circles.indexOf(intersects[i].object.name),1)
+			if (selected_verts.includes(intersects[i].object.name-1)){
+				selected_verts.splice(selection_circles.indexOf(intersects[i].object.name-1),1)
 				for(j=0;j<selection_circles.length;j++){
 					if (selection_circles[j].name == intersects[i].object.name){
 						galeScene.remove(selection_circles[j])
 						selection_circles.splice(j,1)
-						selected_verts.splice(selected_verts.indexOf(intersects[i].object.name-1),1)
+						//selected_verts.splice(selected_verts.indexOf(intersects[i].object.name-1),1)
 						break
 					}
 				}
@@ -81,6 +81,7 @@ function render() {
 				newCirc.name = intersects[i].object.name
 				selection_circles.push(newCirc)
 			}
+			console.log(selected_verts)
 			addFace(gale_matrix,selected_verts)
 			//intersects[i].object.material.color.set(0xff0000);
 			//console.log(intersects[i].position);
