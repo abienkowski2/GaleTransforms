@@ -110,7 +110,7 @@ function addFace(gale,points){
 	}
 	updateEdges(gale)
 	if (isFace(gale,points)){
-		if (points.length == 3){
+		if (points.length == 3 || points.length == 4){
 			var geometry = new THREE.Geometry();
 			for (i = 0;i<points.length;i++){
 				ind = points[i]

@@ -62,6 +62,9 @@ function convHull(bt,points){
 		}
 
 	}
+	else{
+		cHull = sortpts
+	}
 	return cHull
 }
 
