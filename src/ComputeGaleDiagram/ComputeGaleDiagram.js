@@ -75,13 +75,12 @@ function render() {
 			else if (intersects[i].object.name !=0){
 
 				selected_verts.push(intersects[i].object.name-1)
-				selection_circles.push(intersects[i].object.name)
+				
 				var newCirc = addCircle(intersects[i].object.position.x,intersects[i].object.position.y,1.5,{color:0x000000},galeScene)
 				newCirc.position.z = -0.01
 				newCirc.name = intersects[i].object.name
 				selection_circles.push(newCirc)
 			}
-			console.log(selected_verts)
 			addFace(gale_matrix,selected_verts)
 			//intersects[i].object.material.color.set(0xff0000);
 			//console.log(intersects[i].position);
@@ -221,6 +220,9 @@ function updateGaleDiagram(vertices, scaling_factor) {
 		texts[i].position.set(gale_vertices_3d[i].x,gale_vertices_3d[i].y+1,0)
 		//addCircle(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y,1.0,0x000000,scene)		
 		//loader.load( fonturl, addText(gale_diag_vertices_3d[i].x,gale_diag_vertices_3d[i].y+1,(i).toString(),scene, 2))		
+	}
+	for(i=0;i<selection_circles.length;i++){
+		selection_circles[i].position.set(gale_vertices_3d[selection_circles[i].name].x,gale_vertices_3d[selection_circles[i].name].y,-0.01)
 	}
 
 	/*function animate() {
