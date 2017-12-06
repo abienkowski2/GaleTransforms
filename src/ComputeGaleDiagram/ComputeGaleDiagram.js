@@ -72,7 +72,8 @@ function render() {
 					}
 				}
 			}
-			else{
+			else if (intersects[i].object.name !=0){
+
 				selected_verts.push(intersects[i].object.name-1)
 				selection_circles.push(intersects[i].object.name)
 				var newCirc = addCircle(intersects[i].object.position.x,intersects[i].object.position.y,1.5,{color:0x000000},galeScene)

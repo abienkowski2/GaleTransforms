@@ -100,6 +100,7 @@ function updateFunc(event){
 		updateEdges(gale_diag_matrix,-1,-1)
 		affineGale = affineGalePoints(gale_diag_matrix);
 		updateAffGale(affineGale)
+		addFace(gale_diag_matrix,selected_verts)
 	}
 
 }
