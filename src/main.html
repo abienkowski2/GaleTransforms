@@ -12,7 +12,7 @@
 	<body>
 		<h2>Gale and Affine Gale Transformations</h2>
 		<div>
-		<p><b>Gale Transform: </b> Gale transforms are a method to visualize and determine information about high dimensional polytopes. At its core, the Gale Transform of a d dimensional polytope with n vertices (v<sub>1</sub>, v<sub>2</sub>, ..., v<sub>n</sub> &#x220A; &#x211D;<sup>d</sup>) is a basis of the null space of the (d+1) x n dimensional matrix where the first d rows have the vertex points as columns, and the last row is 1s. If a d dimensional polytop with n vertices is represented as a matrix A in (d+1) space, then the kernel of A is the linear subspace<p>
+		<p><b>Gale Transform: </b> Gale transforms are a method to visualize and determine information about high dimensional polytopes. At its core, the Gale Transform of a d dimensional polytope with n vertices (v<sub>1</sub>, v<sub>2</sub>, ..., v<sub>n</sub> &#x220A; &#x211D;<sup>d</sup>) is a basis of the null space of the (d+1) x n dimensional matrix where the first d rows have the vertex points as columns, and the last row is 1s. If a d-dimensional polytope with n vertices is represented as a matrix A in (d+1) space, then the kernel of A is the linear subspace<p>
 <p style="text-align:center">ker<sub>&#x211D;</sub>(A) &#x2254; { x &#x220A; &#x211D;<sup>n</sup> : Ax = 0}</p>
 <p>If there are (d+1) affinely independent vectors i.e., the rank of A is (d+1), then the dimension of the kernel of A is n-(d+1). This means that those n-(d+1) vectors in &#x211D;<sup>n</sup> form the basis for the vector space ker<sub>&#x211D;</sub>(A). These basis vectors can be represented as an n x (n-d-1) matrix</p>
 <p style="text-align:center"> X &#x2254; (x<sub>1</sub> x<sub>2</sub> . . . x<sub>n-d-1</sub>)</p>
@@ -20,7 +20,7 @@
 <p style="text-align:center"> B = X<sup>t</sup> &#x2254; {b<sub>1</sub> b<sub>2</sub> . . . b<sub>n</sub> : b<sub>i</sub> &#x220A; &#x211D;<sup>n-d-1</sup>} </p>
 		</div>
 		<div>
-		<p><b>Face Categorization:</b> If P is the convex polytope of given n vertices in &#x211D;<sup>d</sup>, and B be the Gale transform, then J &#x2286; [n] is a face of P if and only if either J = [n] or 0 &#x220A; relative_interior(conv({b<sub>k</sub> : k &#x2209; J})).</p>
+		<p><b>Face Categorization:</b> If P is the convex polytope of given n vertices in &#x211D;<sup>d</sup>, and B is the Gale transform, then J &#x2286; [n] is a face of P if and only if either J = [n] or 0 &#x220A; relative_interior(conv({b<sub>k</sub> : k &#x2209; J})).</p>
 		</div>
 		<div>
 		<b> Affine Gale Diagram: </b> It further reduces the dimension of the Gale diagram by one. Certain conditions on a collection of black and white dots in the affine Gale diagram is equivalent to the face test in the Gale diagram and thus, helps the user to read off the polytopal face lattice.
@@ -33,8 +33,8 @@
 		<li> In the <i>movement</i> mode, the single left click anywhere except on the nodes (spheres) helps the user move the graph in any direction until the key is released.</li>
 		<li> In a similar manner, a node can also be moved in any direction using a single left click until the mouse key is released. <b>The change in the node location may yield a new polytope, and in turn, new Gale and affine Gale diagrams.</b></li>
 		<li> In the <i>rotation</i> mode, the single left click lets the user to rotate the graph in 3 dimensional view.
-		<li> The Gale diagram is used to determine faces in the original polytope. The selected vector in Gale diagram is highligted with a black circle around it.</li>
-		<li> Nodes, by definition, are zero dimensional faces of the polytope. If a selection of vectors in Gale diagram constitutes any high (> 1) dimensional face, that face lattice is highlighed in red in the polytope.</li>
+		<li> The Gale diagram is used to determine faces in the original polytope. The selected vector in Gale diagram is highlighted with a black circle around it.</li>
+		<li> Nodes, by definition, are zero dimensional faces of the polytope. If a selection of vectors in Gale diagram constitutes any 1 or 2 dimensional face, that face lattice is highlighted in red in the polytope.</li>
 		</p>
 		</div>
 		<script src="js/math.min.js"></script>
